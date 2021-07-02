@@ -23,3 +23,13 @@ func (r repository) Create(user models.User) (models.User, error) {
 	}
 	return user, err
 }
+
+func (r repository) FindByEmail(email string) (models.User, error) {
+	user := models.User{}
+	err := r.mysqlSess.Table("users").Where("email = ?", email).Find(&user).Error
+	if err != nil {
+		return models.User{}, err
+	}
+
+	return user, nil
+}
