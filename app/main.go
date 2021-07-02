@@ -5,13 +5,19 @@ import (
 	"log"
 
 	"github.com/galuhpradipta/go-auth-service/models"
+	"github.com/gofiber/fiber/v2"
+
+	userHandler "github.com/galuhpradipta/go-auth-service/domain/user/delivery/http"
+	userRepository "github.com/galuhpradipta/go-auth-service/domain/user/repository"
+	userUsecase "github.com/galuhpradipta/go-auth-service/domain/user/usecase"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	// userRepository "github.com/galuhpradipta/go-auth-user/domain/user/repository"
 )
 
 func main() {
 	fmt.Println("go auth service")
+	fiber := fiber.New()
 
 	db, err := gorm.Open(sqlite.Open("user.db"), &gorm.Config{})
 	if err != nil {
@@ -20,8 +26,9 @@ func main() {
 
 	db.AutoMigrate(&models.User{})
 
-	// fiber := fiber.New()
+	userRepository := userRepository.NewRepository(db)
+	userUsecase := userUsecase.NewUsecase(userRepository)
+	userHandler.NewHandler(fiber, userUsecase)
 
-	// userRepository := userRepository.NewRepository()
-
+	log.Fatal(fiber.Listen(":3000"))
 }

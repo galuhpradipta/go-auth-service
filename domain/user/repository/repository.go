@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/galuhpradipta/go-auth-service/domain/user"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type repository struct {
