@@ -5,6 +5,7 @@ import (
 
 	"github.com/galuhpradipta/go-auth-service/domain/user"
 	"github.com/galuhpradipta/go-auth-service/models"
+	"github.com/galuhpradipta/go-auth-service/shared/jwt/middleware"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -20,7 +21,7 @@ func NewHandler(router *fiber.App, userUsecase user.Usecase) {
 	router.Post("/api/user/register", handler.Register)
 	router.Post("/api/user/login", handler.Login)
 
-	router.Post("/api/user/profile/me", handler.GetProfile)
+	router.Get("/api/user/profile/me", middleware.Protected(), handler.GetProfile)
 }
 
 func (h handler) Register(ctx *fiber.Ctx) error {
