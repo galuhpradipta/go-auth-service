@@ -6,11 +6,14 @@ import (
 	"github.com/galuhpradipta/go-auth-service/domain/user"
 	"github.com/galuhpradipta/go-auth-service/models"
 	"golang.org/x/crypto/bcrypt"
+
+	sharedJwt "github.com/galuhpradipta/go-auth-service/shared/jwt"
 )
 
 var (
-	ErrEmailRecordExist = errors.New("email record already exist")
-	ErrHashPassword     = errors.New("failed to hashpassword")
+	ErrEmailRecordExist     = errors.New("error, email record already exist")
+	ErrHashPassword         = errors.New("error, failed to hashpassword")
+	ErrPasswordDoesNotMatch = errors.New("error, password doesnt match")
 )
 
 const BCRYPT_HASH_COST = 12
@@ -44,6 +47,26 @@ func (u usecase) Register(email, address, password string) (models.User, error) 
 	})
 }
 
+func (u usecase) Login(email, plainPassword string) (string, error) {
+
+	user, err := u.userRepository.FindByEmail(email)
+	if err != nil {
+		return "", err
+	}
+
+	if err := u.compareHashAndPassword(user.Password, plainPassword); err != nil {
+		return "", ErrPasswordDoesNotMatch
+	}
+
+	token, err := sharedJwt.GenerateSessionToken(user.Email)
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
+
+}
+
 func (u usecase) hashPassword(plain string) (string, error) {
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(plain), BCRYPT_HASH_COST)
@@ -53,4 +76,8 @@ func (u usecase) hashPassword(plain string) (string, error) {
 	}
 
 	return string(hashedPassword), nil
+}
+
+func (u usecase) compareHashAndPassword(hashedPassword, password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }

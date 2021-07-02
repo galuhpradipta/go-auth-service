@@ -10,19 +10,13 @@ const (
 	SECRET_KEY = "secret"
 )
 
-type UserData struct {
-	UserID int64
-	Email  string
-}
-
-func GenerateSessionToken(userData UserData) (string, error) {
+func GenerateSessionToken(email string) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 
 	claims["sub"] = "1"
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 3) // 3 day expiration
-	claims["user_id"] = userData.UserID
-	claims["email"] = userData.Email
+	claims["email"] = email
 
 	tokenString, err := token.SignedString([]byte(SECRET_KEY))
 	if err != nil {

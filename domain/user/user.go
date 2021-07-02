@@ -9,4 +9,5 @@ type Repository interface {
 
 type Usecase interface {
 	Register(email, address, password string) (models.User, error)
+	Login(email, plainPassword string) (string, error)
 }

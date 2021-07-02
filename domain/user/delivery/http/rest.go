@@ -54,6 +54,13 @@ func (h handler) Login(ctx *fiber.Ctx) error {
 		})
 	}
 
+	token, err := h.userUsecase.Login(payload.Email, payload.Password)
+	if err != nil {
+		return ctx.Status(http.StatusBadRequest).JSON(models.HttpResponse{
+			Error: err.Error(),
+		})
+	}
+
 	// user, err := h.userUsecase.Register(payload.Email, payload.Address, payload.Password)
 	// if err != nil {
 	// 	return ctx.Status(http.StatusInternalServerError).JSON(models.HttpResponse{
@@ -62,6 +69,6 @@ func (h handler) Login(ctx *fiber.Ctx) error {
 	// }
 
 	return ctx.JSON(models.HttpResponse{
-		Data: payload,
+		Data: token,
 	})
 }
