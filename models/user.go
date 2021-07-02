@@ -1,6 +1,10 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"time"
+
+	"github.com/jinzhu/gorm"
+)
 
 type (
 	User struct {
@@ -8,6 +12,14 @@ type (
 		Email    string `gorm:"index:idx_user_email,unique"`
 		Address  string
 		Password string
+	}
+
+	UserDTO struct {
+		ID        uint      `json:"id"`
+		Email     string    `json:"email"`
+		Address   string    `json:"address"`
+		CreatedAt time.Time `json:"created_at"`
+		UpdatedAt time.Time `json:"updated_at"`
 	}
 
 	UserRegisterRequest struct {

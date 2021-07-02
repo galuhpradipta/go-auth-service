@@ -67,6 +67,24 @@ func (u usecase) Login(email, plainPassword string) (string, error) {
 
 }
 
+func (u usecase) GetProfile(email string) (models.UserDTO, error) {
+
+	user, err := u.userRepository.FindByEmail(email)
+	if err != nil {
+		return models.UserDTO{}, err
+	}
+
+	userDTO := models.UserDTO{
+		ID:        user.ID,
+		Email:     user.Email,
+		Address:   user.Address,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
+	}
+
+	return userDTO, nil
+}
+
 func (u usecase) hashPassword(plain string) (string, error) {
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(plain), BCRYPT_HASH_COST)

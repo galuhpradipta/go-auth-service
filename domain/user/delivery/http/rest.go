@@ -7,6 +7,8 @@ import (
 	"github.com/galuhpradipta/go-auth-service/models"
 	"github.com/galuhpradipta/go-auth-service/shared/middleware"
 	"github.com/gofiber/fiber/v2"
+
+	sharedJwt "github.com/galuhpradipta/go-auth-service/shared/jwt"
 )
 
 type handler struct {
@@ -73,7 +75,19 @@ func (h handler) Login(ctx *fiber.Ctx) error {
 
 func (h handler) GetProfile(ctx *fiber.Ctx) error {
 
+	email, err := sharedJwt.ExtractToken(ctx)
+	if err != nil {
+		return err
+	}
+
+	user, err := h.userUsecase.GetProfile(email)
+	if err != nil {
+		return ctx.Status(http.StatusInternalServerError).JSON(models.HttpResponse{
+			Error: err.Error(),
+		})
+	}
+
 	return ctx.JSON(models.HttpResponse{
-		Data: "",
+		Data: user,
 	})
 }
