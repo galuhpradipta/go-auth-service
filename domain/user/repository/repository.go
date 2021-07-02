@@ -7,17 +7,17 @@ import (
 )
 
 type repository struct {
-	mysqlSess *gorm.DB
+	sqliteSess *gorm.DB
 }
 
-func NewRepository(mysqlSess *gorm.DB) user.Repository {
+func NewRepository(sqliteSess *gorm.DB) user.Repository {
 	return &repository{
-		mysqlSess: mysqlSess,
+		sqliteSess: sqliteSess,
 	}
 }
 
 func (r repository) Create(user models.User) (models.User, error) {
-	err := r.mysqlSess.Create(&user).Error
+	err := r.sqliteSess.Create(&user).Error
 	if err != nil {
 		return models.User{}, err
 	}
@@ -26,7 +26,7 @@ func (r repository) Create(user models.User) (models.User, error) {
 
 func (r repository) FindByEmail(email string) (models.User, error) {
 	user := models.User{}
-	err := r.mysqlSess.Table("users").Where("email = ?", email).Find(&user).Error
+	err := r.sqliteSess.Table("users").Where("email = ?", email).Find(&user).Error
 	if err != nil {
 		return models.User{}, err
 	}
