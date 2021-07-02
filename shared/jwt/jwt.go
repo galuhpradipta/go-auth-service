@@ -4,10 +4,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-)
-
-const (
-	SECRET_KEY = "secret"
+	"github.com/galuhpradipta/go-auth-service/shared/jwt/constant"
 )
 
 func GenerateSessionToken(email string) (string, error) {
@@ -18,7 +15,7 @@ func GenerateSessionToken(email string) (string, error) {
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 3) // 3 day expiration
 	claims["email"] = email
 
-	tokenString, err := token.SignedString([]byte(SECRET_KEY))
+	tokenString, err := token.SignedString([]byte(constant.JWT_SECRET_KEY))
 	if err != nil {
 		return "", err
 

@@ -19,6 +19,8 @@ func NewHandler(router *fiber.App, userUsecase user.Usecase) {
 
 	router.Post("/api/user/register", handler.Register)
 	router.Post("/api/user/login", handler.Login)
+
+	router.Post("/api/user/profile/me", handler.GetProfile)
 }
 
 func (h handler) Register(ctx *fiber.Ctx) error {
@@ -61,14 +63,16 @@ func (h handler) Login(ctx *fiber.Ctx) error {
 		})
 	}
 
-	// user, err := h.userUsecase.Register(payload.Email, payload.Address, payload.Password)
-	// if err != nil {
-	// 	return ctx.Status(http.StatusInternalServerError).JSON(models.HttpResponse{
-	// 		Error: err.Error(),
-	// 	})
-	// }
+	return ctx.JSON(models.HttpResponse{
+		Data: map[string]string{
+			"access_token": token,
+		},
+	})
+}
+
+func (h handler) GetProfile(ctx *fiber.Ctx) error {
 
 	return ctx.JSON(models.HttpResponse{
-		Data: token,
+		Data: "",
 	})
 }
