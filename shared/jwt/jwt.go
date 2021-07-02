@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/galuhpradipta/go-auth-service/shared/jwt/constant"
+	"github.com/galuhpradipta/go-auth-service/shared/constant"
 )
 
 func GenerateSessionToken(email string) (string, error) {

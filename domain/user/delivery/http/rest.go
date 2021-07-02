@@ -5,7 +5,7 @@ import (
 
 	"github.com/galuhpradipta/go-auth-service/domain/user"
 	"github.com/galuhpradipta/go-auth-service/models"
-	"github.com/galuhpradipta/go-auth-service/shared/jwt/middleware"
+	"github.com/galuhpradipta/go-auth-service/shared/middleware"
 	"github.com/gofiber/fiber/v2"
 )
 

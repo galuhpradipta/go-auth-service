@@ -2,12 +2,13 @@ package middleware
 
 import (
 	"github.com/galuhpradipta/go-auth-service/models"
-	"github.com/galuhpradipta/go-auth-service/shared/jwt/constant"
+	"github.com/galuhpradipta/go-auth-service/shared/constant"
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v2"
 )
 
 func Protected() fiber.Handler {
+
 	return jwtware.New(jwtware.Config{
 		SigningKey:   []byte(constant.JWT_SECRET_KEY),
 		ErrorHandler: jwtError,
