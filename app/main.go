@@ -21,13 +21,13 @@ func main() {
 	fiber.Use(recover.New())
 	fiber.Use(logger.New())
 
-	db, err := gorm.Open(sqlite.Open("user.db"), &gorm.Config{})
+	sqliteDB, err := gorm.Open(sqlite.Open("user.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
-	db.AutoMigrate(&models.User{})
+	sqliteDB.AutoMigrate(&models.User{})
 
-	userRepository := userRepository.NewRepository(db)
+	userRepository := userRepository.NewRepository(sqliteDB)
 	userUsecase := userUsecase.NewUsecase(userRepository)
 	userHandler.NewHandler(fiber, userUsecase)
 

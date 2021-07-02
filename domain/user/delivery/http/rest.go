@@ -35,6 +35,7 @@ func (h handler) Register(ctx *fiber.Ctx) error {
 			Error: err.Error(),
 		})
 	}
+
 	return ctx.JSON(models.HttpResponse{
 		Data: map[string]interface{}{
 			"message": "successfully registering new user",

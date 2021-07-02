@@ -5,7 +5,7 @@ import "github.com/jinzhu/gorm"
 type (
 	User struct {
 		gorm.Model
-		Email    string
+		Email    string `gorm:"index:idx_user_email,unique"`
 		Address  string
 		Password string
 	}
