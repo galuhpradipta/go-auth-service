@@ -9,4 +9,10 @@ type (
 		Address  string
 		Password string
 	}
+
+	UserRegisterRequest struct {
+		Email    string
+		Address  string
+		Password string
+	}
 )
