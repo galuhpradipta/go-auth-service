@@ -15,4 +15,9 @@ type (
 		Address  string
 		Password string
 	}
+
+	UserLoginRequest struct {
+		Email    string
+		Password string
+	}
 )
